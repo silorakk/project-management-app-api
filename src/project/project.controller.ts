@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { GetUser } from 'src/get-user.decorator';
@@ -18,5 +26,10 @@ export class ProjectController {
   @Post()
   createProject(@Body() body: CreateProjectDto, @GetUser() user: User) {
     return this.projectService.createProject(body, user);
+  }
+
+  @Delete('/:id')
+  deleteProjectById(@Param('id') id: string) {
+    return this.projectService.deleteProjectById(id);
   }
 }
