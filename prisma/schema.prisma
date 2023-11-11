@@ -28,8 +28,8 @@ model User {
 }
 
 model Project {
-  id Int @id @default(autoincrement())
-
+  id      Int    @id @default(autoincrement())
+  name    String
   members User[]
   Task    Task?
 
