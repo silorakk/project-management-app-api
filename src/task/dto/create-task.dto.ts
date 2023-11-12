@@ -10,5 +10,6 @@ export class CreateTaskDto {
   @IsNotEmpty()
   projectId: string;
 
+  @IsString()
   status?: TaskStatus;
 }

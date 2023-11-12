@@ -6,6 +6,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class TaskService {
   constructor(private prisma: PrismaService) {}
   async createTask(dto: CreateTaskDto) {
+    console.log('received status', dto.status);
     const task = await this.prisma.task.create({
       data: {
         name: dto.name,
@@ -14,6 +15,6 @@ export class TaskService {
       },
     });
 
-    return task;
+    return { task: task };
   }
 }

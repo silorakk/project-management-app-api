@@ -28,6 +28,16 @@ export class ProjectController {
     return this.projectService.getProjectById(id, user);
   }
 
+  @Post(':id/invite')
+  inviteUserToProject(@Param('id') id: string, @Body('email') email: string) {
+    return this.projectService.inviteUserToProject(id, email);
+  }
+
+  @Get(':id/tasks')
+  getAllProjectTasks(@Param('id') id: string) {
+    return this.projectService.getAllProjectTasks(id);
+  }
+
   @Post()
   createProject(@Body() body: CreateProjectDto, @GetUser() user: User) {
     return this.projectService.createProject(body, user);

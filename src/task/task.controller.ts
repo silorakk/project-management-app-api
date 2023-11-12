@@ -7,6 +7,7 @@ export class TaskController {
   constructor(private taskService: TaskService) {}
   @Post()
   createTask(@Body() dto: CreateTaskDto) {
+    console.log(dto);
     return this.taskService.createTask(dto);
   }
 }
