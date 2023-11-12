@@ -57,4 +57,23 @@ export class ProjectService {
       }
     }
   }
+
+  async getProjectById(id: string, user: User) {
+    const project = await this.prisma.project.findUnique({
+      where: {
+        id: parseInt(id),
+      },
+      include: {
+        members: true,
+      },
+    });
+    const userCanAccessProject = project.members?.find(
+      (member) => member.id === user.id,
+    );
+
+    // TODO: return appropriate error if user doesn't have permissionst to view this project
+    if (userCanAccessProject) {
+      return { project: project };
+    }
+  }
 }

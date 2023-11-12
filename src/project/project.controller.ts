@@ -23,6 +23,11 @@ export class ProjectController {
     return this.projectService.getAllUserProjects(user);
   }
 
+  @Get(':id')
+  getProjectById(@Param('id') id: string, @GetUser() user: User) {
+    return this.projectService.getProjectById(id, user);
+  }
+
   @Post()
   createProject(@Body() body: CreateProjectDto, @GetUser() user: User) {
     return this.projectService.createProject(body, user);
