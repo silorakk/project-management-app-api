@@ -12,7 +12,6 @@ import { CreateTaskDto } from '../task/dto/create-task.dto';
 import { Server, Socket } from 'socket.io';
 import { Logger } from '@nestjs/common';
 import { TaskService } from 'src/task/task.service';
-import { ProjectService } from 'src/project/project.service';
 
 @WebSocketGateway({
   cors: {
@@ -22,10 +21,7 @@ import { ProjectService } from 'src/project/project.service';
 export class TaskGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
-  constructor(
-    private readonly taskService: TaskService,
-    private readonly projectService: ProjectService,
-  ) {}
+  constructor(private readonly taskService: TaskService) {}
 
   @WebSocketServer() io: Server;
 
@@ -54,7 +50,6 @@ export class TaskGateway
   }
   @SubscribeMessage('createTask')
   async createTask(@MessageBody() createTaskDto: CreateTaskDto) {
-    console.log('socket hit!');
     const task = await this.taskService.createTask(createTaskDto);
     this.io.to(createTaskDto.projectId).emit('message', task);
     return task;

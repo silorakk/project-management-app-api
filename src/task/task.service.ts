@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTaskDto } from './dto';
+import { CreateTaskDto, UpdateStatusDto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -15,6 +15,18 @@ export class TaskService {
       },
     });
 
+    return { task: task };
+  }
+
+  async updateStatus(dto: UpdateStatusDto) {
+    const task = await this.prisma.task.update({
+      where: {
+        id: parseInt(dto.id),
+      },
+      data: {
+        status: dto.status,
+      },
+    });
     return { task: task };
   }
 }
