@@ -3,7 +3,6 @@ import { CreateProjectDto } from './dto/create-project.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class ProjectService {
@@ -28,27 +27,25 @@ export class ProjectService {
   }
 
   async inviteUserToProject(projectId: string, email: string) {
-    try {
-      const user = await this.prisma.user.findUnique({
-        where: {
-          email: email,
-        },
-      });
-      if (!user) throw new NotFoundException('user not found');
-      await this.prisma.project.update({
-        where: {
-          id: parseInt(projectId),
-        },
-        data: {
-          members: {
-            connect: [{ id: user.id }],
-          },
-        },
-      });
-      return { msg: 'Successfully added user to project' };
-    } catch (err) {
-      console.log(err);
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    if (!user) {
+      throw new NotFoundException('user not found');
     }
+    await this.prisma.project.update({
+      where: {
+        id: parseInt(projectId),
+      },
+      data: {
+        members: {
+          connect: [{ id: user.id }],
+        },
+      },
+    });
+    return { msg: 'Successfully added user to project' };
   }
 
   async getAllProjectTasks(projectId: string) {

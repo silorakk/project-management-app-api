@@ -7,6 +7,9 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ConfigModule } from '@nestjs/config';
 import { ProjectModule } from './project/project.module';
 import { TaskModule } from './task/task.module';
+import { TaskGateway } from './task/task.gateway';
+import { TaskService } from './task/task.service';
+import { ProjectService } from './project/project.service';
 
 @Module({
   imports: [
@@ -18,6 +21,6 @@ import { TaskModule } from './task/task.module';
     TaskModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, TaskGateway, TaskService, ProjectService],
 })
 export class AppModule {}
